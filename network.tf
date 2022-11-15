@@ -1,19 +1,19 @@
-resource "google_compute_network" "default" {
+resource "google_compute_network" "petclinic_vpc" {
   name                    = "petclinic-vpc"
   auto_create_subnetworks = false
   mtu                     = 1460
 }
 
-resource "google_compute_subnetwork" "default" {
+resource "google_compute_subnetwork" "petclinic_ane3" {
   name          = "petclinic-subnet"
   ip_cidr_range = "10.0.1.0/24"
-  network       = google_compute_network.default.id
+  network       = google_compute_network.petclinic_vpc.id
 }
 
 
 resource "google_compute_firewall" "allow-80-ig" {
   name      = "allow-80-ig"
-  network   = google_compute_network.default.name
+  network   = google_compute_network.petclinic_vpc.name
   direction = "INGRESS"
   priority  = 300
 
@@ -30,7 +30,7 @@ resource "google_compute_firewall" "allow-80-ig" {
 
 resource "google_compute_firewall" "allow-22-ig" {
   name      = "allow-22-ig"
-  network   = google_compute_network.default.name
+  network   = google_compute_network.petclinic_vpc.name
   direction = "INGRESS"
   priority  = 1000
 
@@ -48,7 +48,7 @@ resource "google_compute_firewall" "allow-22-ig" {
 
 resource "google_compute_firewall" "allow-all-eg" {
   name      = "allow-all-eg"
-  network   = google_compute_network.default.name
+  network   = google_compute_network.petclinic_vpc.name
   direction = "EGRESS"
   priority  = 65535
 
@@ -61,7 +61,7 @@ resource "google_compute_firewall" "allow-all-eg" {
 
 resource "google_compute_firewall" "deny-all-ig" {
   name      = "deny-all-ig"
-  network   = google_compute_network.default.name
+  network   = google_compute_network.petclinic_vpc.name
   direction = "INGRESS"
   priority  = 65535
 

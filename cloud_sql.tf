@@ -10,7 +10,7 @@ resource "google_sql_database_instance" "petclinic" {
     disk_size         = 10
     ip_configuration {
       ipv4_enabled    = false
-      private_network = google_compute_network.default.id
+      private_network = google_compute_network.petclinic_vpc.id
     }
   }
   depends_on = [google_service_networking_connection.default]
@@ -22,12 +22,12 @@ resource "google_compute_global_address" "private_ip_address" {
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 16
-  network       = google_compute_network.default.id
+  network       = google_compute_network.petclinic_vpc.id
 }
 
 
 resource "google_service_networking_connection" "default" {
-  network                 = google_compute_network.default.id
+  network                 = google_compute_network.petclinic_vpc.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
 }
