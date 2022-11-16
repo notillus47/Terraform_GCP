@@ -15,7 +15,7 @@ resource "google_sql_database_instance" "petclinic" {
   }
   depends_on = [google_service_networking_connection.default]
 }
-
+# test
 
 resource "google_compute_global_address" "private_ip_address" {
   name          = "private-ip-address"
